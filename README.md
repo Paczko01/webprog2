@@ -1,11 +1,1 @@
-Hello World!
-Nagyon unalmas még mindig az óra!!! ;)
-Valaki bírja ezt a palit?
-Szerintem ő se magát :'D
-Na az úgy jó :'D :'D
-"zzzzzzzzzzzzzzzzzzzzzz..."
-FEJEZZE MÁR BE!!!
-????
-Csak azért se!
-Miért kell ilyen hülyeséggel húzni az időt?
-Legyen már vége...
+A szerveroldali kiszolgáló mappájába be kell helyezni a teljes projektet kivéve a db_webprog.sql fájlt. Ezt a fájlt MySql adatbázisban futtatni kell. Ez a verzió egyenlőre olyan, hogy létre kell hozni egy új felhasználót adatbázis szinten. A felhasználónevet és a jelszavát be kell helyettesíteni a Service mappában a "LoadChannels.php" állományban a megfelelő változókba, VAGY outsider névvel, és outsider jelszóval kell létrehozni az adatbázis szintű felhasználót.
