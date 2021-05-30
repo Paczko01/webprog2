@@ -29,9 +29,30 @@ const ChannelList = (function()
         onClickJoin: function(event)
         {
             event.preventDefault();
+            const id = event.target.getAttribute("value");
 
-            //Csatlakozás a(z) id azonosítójú csatornához és aloldalváltás
-            console.log("Csatlakozás a(z) " + id + " azonosítójú csatornához és aloldalváltás");
+            if (event.target.classList.contains("enabled"))
+            {
+                this.xhttp.onreadystatechange = function ()
+                {
+                    if (this.readyState == 4 && this.status == 200)
+                    {
+                        console.log(this.responseText);
+                        //Itt még le kell ellenőrizni, hogy sikerült-e az adatbázisban a csatlakozás mielőtt oldaltváltunk
+                        //location.replace("http://localhost/webprog2/subpage.html");
+                    }
+                };
+
+                this.xhttp.open("POST", "Service/JoinChannel.php", true);
+                this.xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                //Itt még ki kell deríteni, hogy ki szeretne csatlakozni
+                this.xhttp.send(
+                    "u=" + this.username +
+                    "&p=" + this.password +
+                    "&ch=" + id +
+                    "&player=1");
+            }
         },
 
         onClickNew: function(event)
@@ -39,7 +60,7 @@ const ChannelList = (function()
             event.preventDefault();
 
             //Új csatorna létrehozása és aloldalváltás
-            console.log("Új csatorna létrehozása és aloldalváltás");
+            location.replace("http://localhost/webprog2/subpage.html");
         },
 
         onClickSignOut: function(event)
@@ -47,7 +68,7 @@ const ChannelList = (function()
             event.preventDefault();
 
             //Kijelentkezés és aloldalváltás
-            console.log("Kijelentkezés és aloldalváltás");
+            location.replace("http://localhost/webprog2/subpage.html");
         },
 
         addClickListenerToButtons: function()
@@ -86,7 +107,7 @@ const ChannelList = (function()
                     <li>` + row["player_1_ID"] + `</li>
                     <li>` + row["player_2_ID"] + `</li>
                     <button value="` + row["Id"] + `"`;
-                    main.Html.Content += (row["status"] === 's')? " disabled" : "";
+                    main.Html.Content += (row["status"] === 'u') ? ` class="enabled"` : ``;
                     main.Html.Content += `>Csatlakozás</button>
                 </ul>`;
                 }
@@ -101,7 +122,7 @@ const ChannelList = (function()
 
         Init: function()
         {
-            //Fields of main
+            //These has to be replaced to the usrname and passwd of the current user
             this.username = "outsider";
             this.password = "outsider";
             this.xhttp = new XMLHttpRequest();
