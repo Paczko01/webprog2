@@ -9,7 +9,7 @@ const ChannelList = (function()
 
             OnHtmlContentIsReady: function(val){
                 document.getElementById("channels").innerHTML = main.Html.Content.replaceAll('null', '');
-                main.addClickListenerToButtons();
+                main.addClickListenerToButtonsOfChannels();
             },
 
             set Ready(val){
@@ -39,7 +39,7 @@ const ChannelList = (function()
                     {
                         console.log(this.responseText);
                         //Itt még le kell ellenőrizni, hogy sikerült-e az adatbázisban a csatlakozás mielőtt oldaltváltunk
-                        //location.replace("http://localhost/webprog2/subpage.html");
+                        location.replace("http://localhost/webprog2/GameBoard/index.html");
                     }
                 };
 
@@ -60,7 +60,7 @@ const ChannelList = (function()
             event.preventDefault();
 
             //Új csatorna létrehozása és aloldalváltás
-            location.replace("http://localhost/webprog2/subpage.html");
+            location.replace("http://localhost/webprog2/GameBoard/index.html");
         },
 
         onClickSignOut: function(event)
@@ -68,10 +68,18 @@ const ChannelList = (function()
             event.preventDefault();
 
             //Kijelentkezés és aloldalváltás
-            location.replace("http://localhost/webprog2/subpage.html");
+            location.replace("http://localhost/webprog2/login/login.html");
         },
 
-        addClickListenerToButtons: function()
+        onClickRecords: function(event)
+        {
+            event.preventDefault();
+
+            //Kijelentkezés és aloldalváltás
+            //location.replace("http://localhost/webprog2/?/?.html");
+        },
+
+        addClickListenerToButtonsOfChannels: function()
         {
 
             const channels = document.querySelectorAll("#channels ul");
@@ -139,6 +147,13 @@ const ChannelList = (function()
             button.addEventListener("click", function(event)
             {
                 main.onClickSignOut(event);
+            });
+
+            //Add click event listener to button SIGN OUT
+            button = document.querySelector("footer button");
+            button.addEventListener("click", function(event)
+            {
+                main.onClickRecords(event);
             });
 
             //Requesting channel list from server side
