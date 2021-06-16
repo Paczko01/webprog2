@@ -9,22 +9,22 @@ if (isset($_POST["u"]) &&
     echo 'Join channel\n'; //This line is for debug
 
     //Create connection with the database
-	$conn = new mysqli("localhost", $_POST["u"], $_POST["p"]);
-    if ($conn->connect_error)
+	$mysqli = new mysqli("localhost", $_POST["u"], $_POST["p"]);
+    if ($mysqli->connect_error)
     {
-        die("Connection failed: " . $conn->connect_error);
+        die("Connection failed: " . $mysqli->connect_error);
     }
     echo 'Connection successfull\n'; //This line is for debug
 
     //Execute 'JoinChannel' procedure
     //Get the sql query to be ready for execute.
-    $sql = "CALL `JoinChannel`(" . $_POST["ch"] . ", " . $_POST["player"] . ");";
+    $sql  = " SET @p0='" . $_POST["ch"] . "';";
+    $sql .= " SET @p1='" . $_POST["player"] . "';";
+    $sql .= " CALL `JoinChannell`(@p0, @p1);`";
     //Execute the sql query
-    $conn->query($sql);
-    
-    echo 'Procedure completed\n'; //This line is for debug
+    $result = $mysqli->query($sql);
 
-    //Itt m�g lehet, hogy k�rni kell egy jelent�st az elj�r�s sikeress�g�r�l
+    $mysqli->close();
 }
 
 ?>
