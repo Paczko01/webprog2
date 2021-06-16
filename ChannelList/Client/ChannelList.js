@@ -42,16 +42,27 @@ const ChannelList = (function()
                         location.replace("http://localhost/webprog2/GameBoard/index.html");
                     }
                 };
+                /*  Eseménykezelő definiálása: Ha a szerveroldal megváltoztatja a "readyState" mezőt,
+                    akkor ez a névtelen függvény fut le akárcsak a w3schools példáiban*/
 
+                
                 this.xhttp.open("POST", "Service/JoinChannel.php", true);
+                /*  1. paraméter: POST metódussal megy a kérés (A kérés paraméterei nem az URL-ben lesznek, hanem a "send" függvényben.)
+                    2. paraméter: A Service mappában a JoinChannel.php -nak megy a kérés
+                    3. paraméter: Asszinkron történjen-e a kommunikáció a szerver és a kliens között.
+                       (Asszinkron: háttérben megy a kérés, és fut tovább a kliensoldali webprogram.
+                        Szinkron: A kliens megvárja a szerver válaszát. Addig nem fut a kliensoldali webprogram.)*/
+                
+                
                 this.xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
                 //Itt még ki kell deríteni, hogy ki szeretne csatlakozni
                 this.xhttp.send(
                     "u=" + this.username +
                     "&p=" + this.password +
                     "&ch=" + id +
                     "&player=1");
+                /*  Itt kell megadni a szerveroldali webprogramnak fontos prarmétereket.
+                    Specifikusan egy csatornához való csatlakozáskor kell az, hogy ki (Id, név, jelszó) hova (csatornaID) akar csatlakozni.*/
             }
         },
 
@@ -95,6 +106,10 @@ const ChannelList = (function()
         LoadChannels: function()
         {
             if (this.readyState == 4 && this.status == 200)
+            /*  Ha a readyState 4-es értéket kap, az azt jelenti, hogy mindennel elkészült a szerver oldal, amit a kliens oldal kért.
+                Ha a status 200-as értéket kap, az azt jelenti, hogy minden hibamentesen zajlott.
+                Bővebb információk: https://www.w3schools.com/xml/ajax_xmlhttprequest_response.asp
+                */
             {
                 //Convert JSON to JavaScript object
                 const result = JSON.parse(this.responseText); //A responseText-BEN KI KELL CSERÉLNI MINDEN 'null' SZÖVEGET '' -RA!
@@ -133,7 +148,7 @@ const ChannelList = (function()
             //These has to be replaced to the usrname and passwd of the current user
             this.username = "outsider";
             this.password = "outsider";
-            this.xhttp = new XMLHttpRequest();
+            this.xhttp = new XMLHttpRequest(); //Ez lesz magának a kérésnek az objektuma. A szerver oldal ezen keresztül küld választ.
 
             //Add click event listener to button NEW CHANNEL
             let button = document.querySelector("#head button");
@@ -153,15 +168,34 @@ const ChannelList = (function()
             button = document.querySelector("footer button");
             button.addEventListener("click", function(event)
             {
+
                 main.onClickRecords(event);
             });
 
             //Requesting channel list from server side
             this.xhttp.onreadystatechange = this.LoadChannels;
+            /*  Eseménykezelő definiálása: Ha a szerveroldal megváltoztatja a "readyState" mezőt,
+                akkor a LoadChannels függvény fut le. Ezt a w3schools névtelen függvényekkel oldja meg:
+                this.xhttp.onreadystatechange = function()
+                {
+                    if (this.readyState == 4 && this.status == 200)
+                    {
+                        ....
+                    }
+                }
+                */
 
             this.xhttp.open("POST", "Service/LoadChannels.php", true);
+            /*  1. paraméter: POST metódussal megy a kérés (A kérés paraméterei nem az URL-ben lesznek, hanem a "send" függvényben.)
+                2. paraméter: A Service mappában a LoadChannels.php -nak megy a kérés
+                3. paraméter: Asszinkron történjen-e a kommunikáció a szerver és a kliens között.
+                   (Asszinkron: háttérben megy a kérés, és fut tovább a kliensoldali webprogram.
+                    Szinkron: A kliens megvárja a szerver válaszát. Addig nem fut a kliensoldali webprogram.)*/
+
             this.xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             this.xhttp.send( "u=" + this.username + "&p=" + this.password );
+            /*  Itt kell megadni a szerveroldali webprogramnak fontos prarmétereket.
+                Specifikusan a csatornák betöltéséhez nem kell más, mint hogy ki akarja látni a csatornák listáját.*/
         }
     };
 
