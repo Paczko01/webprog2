@@ -1,3 +1,13 @@
+.info{  
+  display: flex;
+  margin: 0px;
+}
+.your{
+  width: 400px;
+  margin-left: 160px;  
+
+}
+
 .container {
   display: flex;
 }
@@ -9,6 +19,7 @@
   flex-wrap: wrap;
   background-color: blue;
   margin: 20px;
+  margin-top: 0px;
 }
 
 .grid div {
@@ -23,15 +34,29 @@
   flex-wrap: wrap;
   background-color: lightgreen;
   margin: 20px;
+  margin-top: 0px;
 }
-
+.back {
+  display: flex;
+}
 .grid-display {
   width: 400px;
   height: 400px;
   margin: 20px;
   background-color: yellow;
 }
-
+.enemy-ships {
+  margin: 20px;
+  width: 300px;
+  text-align: center;
+}
+.hidden-info {
+  margin-left: 350px;
+}
+.write {
+  width: 200px;
+  text-align: center;
+}
 .destroyer-container {
   width: 80px;
   height: 40px;
