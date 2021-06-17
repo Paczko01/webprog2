@@ -24,6 +24,33 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentPlayer = 'user';
   const width = 10;
   let userShips = 0;
+  let coordinates1 = '';
+  let coordinates2 = '';
+  let shoot1 = -1;
+  let shoot2 = -1;
+  let enemyArray =[
+    {
+      name: 'destroyer',
+      coordinates:[-1,-1]
+    },
+    {
+      name: 'submarine',
+      coordinates: [-1,-1,-1]
+      
+    },
+    {
+      name: 'cruiser',
+      coordinates:[-1,-1,-1]
+    },
+    {
+      name: 'battleship',
+      coordinates:[-1,-1,-1,-1]
+    },
+    {
+      name: 'carrier',
+      coordinates: [-1,-1,-1,-1,-1]
+    }
+  ];
 
   //Create Board
   function createBoard(grid, squares) {
@@ -73,8 +100,9 @@ document.addEventListener('DOMContentLoaded', () => {
         [0, 1, 2, 3, 4],
         [0, width, width*2, width*3, width*4]
       ]
-    },
+    }
   ];
+
   const shipArray2 = [
     {
       name: 'cpudestroyer',
@@ -110,30 +138,8 @@ document.addEventListener('DOMContentLoaded', () => {
         [0, 1, 2, 3, 4],
         [0, width, width*2, width*3, width*4]
       ]
-    },
+    }
   ];
-
-  //Draw the computers ships in random locations
-  function generate(ship) {
-    let randomDirection = Math.floor(Math.random() * ship.directions.length);
-    let current = ship.directions[randomDirection];
-    if (randomDirection === 0) direction = 1
-    if (randomDirection === 1) direction = 10
-    let randomStart = Math.abs(Math.floor(Math.random() * computerSquares.length - (ship.directions[0].length * direction)));
-
-    const isTaken = current.some(index => computerSquares[randomStart + index].classList.contains('taken'));
-    const isAtRightEdge = current.some(index => (randomStart + index) % width === width - 1);
-    const isAtLeftEdge = current.some(index => (randomStart + index) % width === 0);
-
-    if (!isTaken && !isAtRightEdge && !isAtLeftEdge) current.forEach(index => computerSquares[randomStart + index].classList.add('taken', ship.name))
-
-    else generate(ship)
-  }
-  generate(shipArray2[0]);
-  generate(shipArray2[1]);
-  generate(shipArray2[2]);
-  generate(shipArray2[3]);
-  generate(shipArray2[4]);
 
   //Rotate the ships
   function rotate() {
@@ -163,9 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
   userSquares.forEach(square => square.addEventListener('dragstart', dragStart));
   userSquares.forEach(square => square.addEventListener('dragover', dragOver));
   userSquares.forEach(square => square.addEventListener('dragenter', dragEnter));
-  userSquares.forEach(square => square.addEventListener('dragleave', dragLeave));
   userSquares.forEach(square => square.addEventListener('drop', dragDrop));
-  userSquares.forEach(square => square.addEventListener('dragend', dragEnd));
 
   let selectedShipNameWithIndex;
   let draggedShip;
@@ -188,24 +192,17 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
   }
 
-  function dragLeave() {
-  }
-
   function dragDrop() {
     let shipNameWithLastId = draggedShip.lastChild.id;
     let shipClass = shipNameWithLastId.slice(0, -2);
     let lastShipIndex = parseInt(shipNameWithLastId.substr(-1));
     let shipLastId = lastShipIndex + parseInt(this.dataset.id);
     const notAllowedHorizontal = [0,10,20,30,40,50,60,70,80,90,1,11,21,31,41,51,61,71,81,91,2,22,32,42,52,62,72,82,92,3,13,23,33,43,53,63,73,83,93];
-    const notAllowedVertical = [99,98,97,96,95,94,93,92,91,90,89,88,87,86,85,84,83,82,81,80,79,78,77,76,75,74,73,72,71,70,69,68,67,66,65,64,63,62,61,60];
-    
+    const notAllowedVertical = [99,98,97,96,95,94,93,92,91,90,89,88,87,86,85,84,83,82,81,80,79,78,77,76,75,74,73,72,71,70,69,68,67,66,65,64,63,62,61,60];   
     let newNotAllowedHorizontal = notAllowedHorizontal.splice(0, 10 * lastShipIndex);
     let newNotAllowedVertical = notAllowedVertical.splice(0, 10 * lastShipIndex);
-
     selectedShipIndex = parseInt(selectedShipNameWithIndex.substr(-1));
-
     shipLastId = shipLastId - selectedShipIndex;
-
     if (isHorizontal && !newNotAllowedHorizontal.includes(shipLastId)) {
       for (let i=0; i < draggedShipLength; i++) {
         userSquares[parseInt(this.dataset.id) - selectedShipIndex + i].classList.add('taken', shipClass);
@@ -221,16 +218,74 @@ document.addEventListener('DOMContentLoaded', () => {
     displayGrid.removeChild(draggedShip);
   }
 
-  function dragEnd() {
-  }
-
   //Game Logic
   function playGame() {
     if (userShips===5){
+      for(let i=0; i <100; i++){
+        if(userSquares[i].classList.contains('taken')){
+          if(userSquares[i].classList.contains('destroyer')) coordinates1 +='de'
+          if(userSquares[i].classList.contains('submarine')) coordinates1 +='su'
+          if(userSquares[i].classList.contains('cruiser')) coordinates1 +='cr'
+          if(userSquares[i].classList.contains('battleship')) coordinates1 +='ba'
+          if(userSquares[i].classList.contains('carrier')) coordinates1 +='ca'
+        }
+        else coordinates1 +='no';
+      }
+      coordinates2="nononononononononononononononononobanononononononononobanonononocacrnononobadenononocacrnononobadenononocacrnonononononononocanononononononononocanononononononononononosususunonononononononononononono";
+      let step = 0;
+      for(let i=0; i <200; i++){
+        if(coordinates2[i]==='n'){
+        } else{
+          if(coordinates2[i]==='d'){
+            for(let j =0; j<2; j++){
+              if(enemyArray[0].coordinates[j]===-1) {
+                enemyArray[0].coordinates[j]=step;
+                break;
+              }
+            }
+          } 
+          if(coordinates2[i]==='s'){
+            for(let j =0; j<3; j++){
+              if(enemyArray[1].coordinates[j]===-1) {
+                enemyArray[1].coordinates[j]=step;
+                break;
+              }
+            }
+          }
+          if(coordinates2[i]==='b'){
+            for(let j =0; j<4; j++){
+              if(enemyArray[3].coordinates[j]===-1) {
+                enemyArray[3].coordinates[j]=step;
+                break;
+              }
+            }
+          }
+          if(coordinates2[i]==='c'){
+            if(coordinates2[i+1]==='r'){
+            for(let j =0; j<3; j++){
+              if(enemyArray[2].coordinates[j]===-1) {
+                enemyArray[2].coordinates[j]=step;
+                break;
+              }
+            }
+          }
+            if(coordinates2[i+1]==='a'){
+            for(let j =0; j<5; j++){
+              if(enemyArray[4].coordinates[j]===-1) {
+                enemyArray[4].coordinates[j]=step;
+                break;
+              }
+            }
+          }
+          }
+        }
+        i++;
+        step++;      
+      }
+      console.log(enemyArray);
       infoDisplay.innerHTML = '';
       document.getElementById("start").disabled = true;
       userGo();
-
     }
     else {
       infoDisplay.innerHTML = 'Nem helyezted el az 5 hajódat!';
@@ -251,7 +306,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   }
-  //    GAME START
+
+      //    GAME START
   startButton.addEventListener('click', playGame);
   let destroyerCount = 0;
   let submarineCount = 0;
@@ -259,18 +315,86 @@ document.addEventListener('DOMContentLoaded', () => {
   let battleshipCount = 0;
   let carrierCount = 0;
 
-
   function revealSquare(square) {
     if(!isGameOver){
-      if (!square.classList.contains('boom')) {
-        if (square.classList.contains('cpudestroyer')) destroyerCount++
-        if (square.classList.contains('cpusubmarine')) submarineCount++
-        if (square.classList.contains('cpucruiser')) cruiserCount++
-        if (square.classList.contains('cpubattleship')) battleshipCount++
-        if (square.classList.contains('cpucarrier')) carrierCount++
+      shoot1 = square.dataset.id;
+      let tmp ='';
+      if(coordinates2[shoot1*2]==='n'){
+        for(let i=0;i<200;i++){
+          if(i===shoot1*2){
+            tmp+='M';
+            tmp+='M';
+            i++;
+          }
+          else tmp+=coordinates2[i]
+        }
+        coordinates2=tmp;
       }
-      if (square.classList.contains('taken')) square.classList.add('boom')
+      if(coordinates2[shoot1*2]==='d') {
+        destroyerCount++;
+        for(let i=0;i<200;i++){
+          if(i===shoot1*2){
+            tmp+='X';
+            tmp+='X';
+            i++;
+          }
+          else tmp+=coordinates2[i]
+        }
+        coordinates2=tmp;
+      }
+      if(coordinates2[shoot1*2]==='s') {
+        submarineCount++;
+        for(let i=0;i<200;i++){
+          if(i===shoot1*2){
+            tmp+='X';
+            tmp+='X';
+            i++;
+          }
+          else tmp+=coordinates2[i]
+        }
+        coordinates2=tmp;
+      }
+      if(coordinates2[shoot1*2]==='b') {
+        battleshipCount++;
+        for(let i=0;i<200;i++){
+          if(i===shoot1*2){
+            tmp+='X';
+            tmp+='X';
+            i++;
+          }
+          else tmp+=coordinates2[i]
+        }
+        coordinates2=tmp;
+      }
+      if(coordinates2[shoot1*2]==='c'){
+        if(coordinates2[(shoot1*2) + 1]==='r') {
+          cruiserCount++;
+          for(let i=0;i<200;i++){
+            if(i===shoot1*2){
+              tmp+='X';
+              tmp+='X';
+              i++;
+            }
+            else tmp+=coordinates2[i]
+          }
+          coordinates2=tmp;
+        }
+        if(coordinates2[(shoot1*2) + 1]==='a') {
+          carrierCount++;
+          for(let i=0;i<200;i++){
+            if(i===shoot1*2){
+              tmp+='X';
+              tmp+='X';
+              i++;
+            }
+            else tmp+=coordinates2[i]
+          }
+          coordinates2=tmp;
+        }
+      }
+      if (coordinates2[shoot1*2]==='X') square.classList.add('boom')
       else square.classList.add('miss')
+      console.log(coordinates2);
       checkForWins();
       currentPlayer = 'computer';
       userGo();
@@ -283,44 +407,43 @@ document.addEventListener('DOMContentLoaded', () => {
   let cpuBattleshipCount = 0;
   let cpuCarrierCount = 0;
 
-
   function computerGo() {
-    let random = Math.floor(Math.random() * userSquares.length);
+    shoot2 = Math.floor(Math.random() * userSquares.length);
     let i =0;
-    console.log(random);
-    if (!userSquares[random].classList.contains('boom')&&!userSquares[random].classList.contains('miss')) {
+    console.log(shoot2);
+    if (!userSquares[shoot2].classList.contains('boom')&&!userSquares[shoot2].classList.contains('miss')) {
       
-      if (userSquares[random].classList.contains('destroyer')) {
+      if (userSquares[shoot2].classList.contains('destroyer')) {
         cpuDestroyerCount++;
         i=1;
-        userSquares[random].classList.add('boom'); 
+        userSquares[shoot2].classList.add('boom'); 
         }
-      if (userSquares[random].classList.contains('submarine')) {
+      if (userSquares[shoot2].classList.contains('submarine')) {
         cpuSubmarineCount++;
         i=1;
-        userSquares[random].classList.add('boom'); 
+        userSquares[shoot2].classList.add('boom'); 
         }
-      if (userSquares[random].classList.contains('cruiser')) {
+      if (userSquares[shoot2].classList.contains('cruiser')) {
         cpuCruiserCount++;
         i=1;
-        userSquares[random].classList.add('boom');
+        userSquares[shoot2].classList.add('boom');
         }
-      if (userSquares[random].classList.contains('battleship')) {
+      if (userSquares[shoot2].classList.contains('battleship')) {
         cpuBattleshipCount++;
         i=1;
-        userSquares[random].classList.add('boom'); 
+        userSquares[shoot2].classList.add('boom'); 
         }
-      if (userSquares[random].classList.contains('carrier')) {
+      if (userSquares[shoot2].classList.contains('carrier')) {
         cpuCarrierCount++;
         i=1;
-        userSquares[random].classList.add('boom');
+        userSquares[shoot2].classList.add('boom');
         }
-      if (i===0)userSquares[random].classList.add('miss');
+      if (i===0)userSquares[shoot2].classList.add('miss');
       checkForWins();
     }
     else computerGo()
     currentPlayer = 'user';
-    turnDisplay.innerHTML = 'Te jössz';
+    turnDisplay.innerHTML = 'Te jössz!';
   }
 
   function checkForWins() {
