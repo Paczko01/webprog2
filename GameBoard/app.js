@@ -19,6 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const ship5Display = document.querySelector('#ship5');
   const userSquares = [];
   const computerSquares = [];
+  //let channel = -1;
+  //let userid = -1;
+  //let enemyid = -1;
+  //let player=0;
+  //let yourid = 1;
   let isHorizontal = true;
   let isGameOver = false;
   let currentPlayer = 'user';
@@ -231,7 +236,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         else coordinates1 +='no';
       }
-      coordinates2="nononononononononononononononononobanononononononononobanonononocacrnononobadenononocacrnononobadenononocacrnonononononononocanononononononononocanononononononononononosususunonononononononononononono";
+      const enemy = ["nononononononononononononononononobanononononononononobanonononocacrnononobadenononocacrnononobadenononocacrnonononononononocanononononononononocanononononononononononosususunonononononononononononono",
+      "nononononononononononocacacacacanonononononononononononononononononononononononononocrcrcrnonononodenononononononononodenononononononononononobabababanononononononononononononononononosususunonononono",
+      "nonononobabababanonononononononononononononosususunonononononononononononononononocacacacacanononononononononononononononononononononodenononononononononodenononocrcrcrnononononononononononononononono",
+      "nonobanononononononononobanononononononononobanononononosunononobanononononosunononononodenononosunononononodenonononononononononononononononononocrcrcrnonononononononononononononononocacacacacanonono",
+      "nonocrcrcrnononononononononononononononononononononocanononononononononocanononononononosunocanononononononosunocanononononononosunocanononononononononononononononodedenonononononononononononobabababa",
+      "nononononononononononodedenononononononononononobabababanonononononononononocrnononononononononocrnonocanonononononocrnonocanonosususunonononocanononononononononocanononononononononocanononononononono"];
+
+      coordinates2=enemy[Math.floor(Math.random() * enemy.length)];
       let step = 0;
       for(let i=0; i <200; i++){
         if(coordinates2[i]==='n'){
@@ -282,8 +294,8 @@ document.addEventListener('DOMContentLoaded', () => {
         i++;
         step++;      
       }
-      console.log(enemyArray);
-      infoDisplay.innerHTML = '';
+      
+      infoDisplay.innerHTML = 'A támadáshoz klikkelj egy tetszőleges mezőre ellenfeled tábláján!';
       document.getElementById("start").disabled = true;
       userGo();
     }
@@ -300,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
         revealSquare(square);
         }))
       }
-      if (currentPlayer === 'computer') {
+      else {
         turnDisplay.innerHTML = 'Ellenfél támad!';
         setTimeout(computerGo, 1000);
       }
@@ -392,9 +404,14 @@ document.addEventListener('DOMContentLoaded', () => {
           coordinates2=tmp;
         }
       }
-      if (coordinates2[shoot1*2]==='X') square.classList.add('boom')
-      else square.classList.add('miss')
-      console.log(coordinates2);
+      if (coordinates2[shoot1*2]==='X'){
+        square.classList.add('boom');
+        infoDisplay.innerHTML = 'Eltaláltad az egyik ellenséges hajót!';
+      }
+      else {
+        square.classList.add('miss');
+        infoDisplay.innerHTML = 'Elhibáztad a lövést!';
+      }
       checkForWins();
       currentPlayer = 'computer';
       userGo();
@@ -410,35 +427,42 @@ document.addEventListener('DOMContentLoaded', () => {
   function computerGo() {
     shoot2 = Math.floor(Math.random() * userSquares.length);
     let i =0;
-    console.log(shoot2);
     if (!userSquares[shoot2].classList.contains('boom')&&!userSquares[shoot2].classList.contains('miss')) {
       
       if (userSquares[shoot2].classList.contains('destroyer')) {
         cpuDestroyerCount++;
         i=1;
-        userSquares[shoot2].classList.add('boom'); 
+        userSquares[shoot2].classList.add('boom');
+        infoDisplay.innerHTML = 'Ellenfeled eltalálta az egyik hajódat!';
         }
       if (userSquares[shoot2].classList.contains('submarine')) {
         cpuSubmarineCount++;
         i=1;
-        userSquares[shoot2].classList.add('boom'); 
+        userSquares[shoot2].classList.add('boom');
+        infoDisplay.innerHTML = 'Ellenfeled eltalálta az egyik hajódat!'; 
         }
       if (userSquares[shoot2].classList.contains('cruiser')) {
         cpuCruiserCount++;
         i=1;
         userSquares[shoot2].classList.add('boom');
+        infoDisplay.innerHTML = 'Ellenfeled eltalálta az egyik hajódat!';
         }
       if (userSquares[shoot2].classList.contains('battleship')) {
         cpuBattleshipCount++;
         i=1;
-        userSquares[shoot2].classList.add('boom'); 
+        userSquares[shoot2].classList.add('boom');
+        infoDisplay.innerHTML = 'Ellenfeled eltalálta az egyik hajódat!'; 
         }
       if (userSquares[shoot2].classList.contains('carrier')) {
         cpuCarrierCount++;
         i=1;
         userSquares[shoot2].classList.add('boom');
+        infoDisplay.innerHTML = 'Ellenfeled eltalálta az egyik hajódat!';
         }
-      if (i===0)userSquares[shoot2].classList.add('miss');
+      if (i===0){
+        userSquares[shoot2].classList.add('miss');
+        infoDisplay.innerHTML = 'Ellenfeled elhibázta a lövését!';
+      }
       checkForWins();
     }
     else computerGo()
