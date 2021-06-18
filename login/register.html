@@ -9,7 +9,7 @@
 </head>
 <body>
   <form action="#" class="login-form">
-    <h1>Bejelentkezés</h1>
+    <h1>Regisztráció</h1>
     <div class="textb">
       <input type="text" required>
       <div class="placeholder">Felhasználónév</div>
@@ -21,15 +21,7 @@
       <div class="show-password fas fa-eye-slash"></div>
     </div>
 
-    <div class="checkbox">
-      <input type="checkbox">
-      <div class="fas fa-check"></div>
-      Maradjon bejelentkezve
-    </div>
-
     <button class="btn fas fa-arrow-right" disabled></button>
-    <a href="#">Nem lehet bejelentkezni?</a>
-    <a href="http://localhost/webprog2/login/register.html">Fiók létrehozása</a>
   </form>
 
   <script>
@@ -46,16 +38,12 @@
 
       xmlHttp.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200){
-          const response = parseInt(this.responseText);
-          if ( response == 1 ){
-            location.replace("http://localhost/webprog2/ChannelList/ChannelList.html");
-          } else {
-            alert("Helytelen felhasználónév vagy jelszó!");
-          }
+          
+          //location.replace("http://localhost/webprog2/login/login.html");
         }
       };
 
-      xmlHttp.open("POST", "login.php", false);
+      xmlHttp.open("POST", "register.php", false);
       xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       xmlHttp.send( "u=" + fields[0].value + "&p=" + fields[1].value );
     }

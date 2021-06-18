@@ -36,7 +36,6 @@ const ChannelList = (function()
         {
             event.preventDefault();
 
-            //Új csatorna létrehozása és aloldalváltás
             location.replace("http://localhost/webprog2/GameBoard/index.html");
         },
 
@@ -44,7 +43,6 @@ const ChannelList = (function()
         {
             event.preventDefault();
 
-            //Kijelentkezés és aloldalváltás
             location.replace("http://localhost/webprog2/login/login.html");
         },
 
@@ -52,8 +50,7 @@ const ChannelList = (function()
         {
             event.preventDefault();
 
-            //Aloldalváltás
-            //location.replace("http://localhost/webprog2/?records?/?records?.html");
+            location.replace("http://localhost/webprog2/table/table.html");
         },
 
         addClickListenerToButtonsOfChannels: function()
@@ -107,21 +104,21 @@ const ChannelList = (function()
             this.xhttp = new XMLHttpRequest(); //Ez lesz magának a kérésnek az objektuma. A szerver oldal ezen keresztül küld választ.
 
             //Add click event listener to button NEW CHANNEL
-            let button = document.querySelector("#head button");
+            let button = document.getElementById("new_channel");
             button.addEventListener("click", function(event)
             {
                 main.onClickNew(event);
             });
 
             //Add click event listener to button SIGN OUT
-            button = document.querySelector("footer button");
+            button = document.getElementById("sign_out");
             button.addEventListener("click", function(event)
             {
                 main.onClickSignOut(event);
             });
 
             //Add click event listener to button RECORDS
-            button = document.querySelector("footer button");
+            button = document.getElementById("records");
             button.addEventListener("click", function(event)
             {
                 main.onClickRecords(event);
