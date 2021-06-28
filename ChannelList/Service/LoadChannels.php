@@ -2,16 +2,13 @@
 
 if(isset($_POST["u"]) && isset($_POST["p"]))
 {
-    //Create connection with the database
-    $conn = new mysqli("localhost", $_POST["u"], $_POST["p"]);
-    if ($conn->connect_error)
-    {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    //List all non-empty channels
-    $sql = "SELECT * FROM `db_webprog`.`channels` WHERE `status` <> 'e'";
-    $result = $conn->query($sql);
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+    $mysqli = new mysqli("localhost", $_POST["u"], $_POST["p"], "db_webprog");
+    if ($mysqli->connect_error)
+        die("Connection failed: " . $mysqli->connect_error);
+    
+    $sql = "SELECT * FROM `channels` WHERE `status` <> 'e'";
+    $result = $mysqli->query($sql);
 
     if ($result->num_rows > 0)
     {
@@ -35,7 +32,7 @@ if(isset($_POST["u"]) && isset($_POST["p"]))
         echo "0 results";
     }
 
-    $conn->close();
+    $mysqli->close();
 }
 
 ?>

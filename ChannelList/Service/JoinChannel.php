@@ -5,27 +5,20 @@
     	isset($_POST["ch"]) &&
     	isset($_POST["player"]))
     {
-        $conn = new mysqli('localhost', $_POST["u"], $_POST["p"], 'db_webprog');
-        if ($conn->connect_error){
-            die("Connection failed: " . $conn->connect_error);
-        }
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+        $mysqli = new mysqli("localhost", $_POST["u"], $_POST["p"], "db_webprog");
+        if ($mysqli->connect_error)
+            die("Connection failed: " . $mysqli->connect_error);
 
-        $sql = "DECLARE EXIT HANDLER FOR SQLEXCEPTION
-        BEGIN
-            ROLLBACK;
-        END;";
-        $conn->query($sql);
-        $sql = "START TRANSACTION;";
-        $conn->query($sql);
-        $sql = "UPDATE `channels`
-        SET `player_2_ID` = pl_Id,
-            `status` = 's'
-        WHERE `Id` = ch_Id;";
-        $conn->query($sql);
-        $sql = "COMMIT;";
-        $conn->query($sql);
+        $sql = "SET @pChannel = ". $_POST["ch"]     .";";
+        $mysqli->query($sql);
 
-        $conn->close();
+        $sql = "SET @pPlayer  = ". $_POST["player"] .";"
+        $mysqli->query($sql);
+
+        $mysqli->multi_query("CALL JoinChannel(@pChannel, @pPlayer)");
+
+        $mysqli->close();
     }
 
 ?>

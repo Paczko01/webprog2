@@ -14,29 +14,47 @@ const ChannelList = (function()
                     if (this.readyState == 4 && this.status == 200)
                     {
                         console.log(this.responseText);
-                        //Itt még le kell ellenőrizni, hogy sikerült-e az adatbázisban a csatlakozás mielőtt oldaltváltunk
-                        //location.replace("http://localhost/webprog2/GameBoard/index.html");
+                        
+                        location.replace("http://localhost/webprog2/GameBoard/index.html");
                     }
                 };
-
                 
-                this.xhttp.open("POST", "Service/JoinChannel.php", false);
+                this.xhttp.open("POST", "Service/JoinChannel.php", true);
                 
                 this.xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                //Itt még ki kell deríteni, hogy ki szeretne csatlakozni
+                
                 this.xhttp.send(
                     "u=" + this.username +
                     "&p=" + this.password +
                     "&ch=" + id +
-                    "&player=1");
+                    "&player=" + this.Id);
             }
         },
 
         onClickNew: function(event)
         {
             event.preventDefault();
+            const id = event.target.getAttribute("value");
 
-            location.replace("http://localhost/webprog2/GameBoard/index.html");
+            this.xhttp.onreadystatechange = function ()
+            {
+                if (this.readyState == 4 && this.status == 200)
+                {
+                    console.log(this.responseText);
+                    
+                    //location.replace("http://localhost/webprog2/GameBoard/index.html");
+                }
+            };
+
+            this.xhttp.open("POST", "Service/NewChannel.php", true);
+            
+            this.xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            
+            this.xhttp.send(
+                "u=" + this.username +
+                "&p=" + this.password +
+                "&ch=" + id +
+                "&player=" + this.Id);
         },
 
         onClickSignOut: function(event)
@@ -98,10 +116,13 @@ const ChannelList = (function()
 
         Init: function()
         {
-            //These has to be replaced to the usrname and passwd of the current user
+            //-----------------------------------------------------------
+            //Ide az aktuálisan bejelentkezett felhasználó adatai jönnek.
+            this.Id       = 1; 
             this.username = "outsider";
             this.password = "outsider";
-            this.xhttp = new XMLHttpRequest(); //Ez lesz magának a kérésnek az objektuma. A szerver oldal ezen keresztül küld választ.
+            //-----------------------------------------------------------
+            this.xhttp = new XMLHttpRequest()
 
             //Add click event listener to button NEW CHANNEL
             let button = document.getElementById("new_channel");
