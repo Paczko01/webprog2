@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>BattleShip</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <div class="info">
+    <div class='your'><h3 id="your-table">A te táblád</h3></div>
+    <div class=><h3 id="enemy-table">Az ellenfél táblája</h3></div>
+    </div>
+    
+    <div class="container">
+        <div class="grid grid-user"></div>
+        <div class="grid grid-computer"></div>
+    </div>
+
+    <div class="hidden-info">
+      <button id="start">Játék indítása</button>
+      <button id="rotate">Hajók forgatása</button>
+      <div class="write">
+        <h3 id="whose-go">Te jössz!</h3>
+        <h3 id="info">Helyezd el a hajóidat!</h3>
+      </div>
+    </div>
+
+    <div class="back">
+      <div class="grid-display">
+        <div class="ship destroyer-container" draggable="true"><div id="destroyer-0"></div><div id="destroyer-1"></div></div>
+        <div class="ship submarine-container" draggable="true"><div id="submarine-0"></div><div id="submarine-1"></div><div id="submarine-2"></div></div>
+        <div class="ship cruiser-container" draggable="true"><div id="cruiser-0"></div><div id="cruiser-1"></div><div id="cruiser-2"></div></div>
+        <div class="ship battleship-container" draggable="true"><div id="battleship-0"></div><div id="battleship-1"></div><div id="battleship-2"></div><div id="battleship-3"></div></div>
+        <div class="ship carrier-container" draggable="true"><div id="carrier-0"></div><div id="carrier-1"></div><div id="carrier-2"></div><div id="carrier-3"></div><div id="carrier-4"></div></div>
+      </div>
+      <div class="enemy-ships">
+        <h3>Ellenséges egységek:</h3>
+        <h3 id="ship1">Romboló(hossz: 2): 1 db</h3>
+        <h3 id="ship2">Tengeralattjáró(hossz: 3): 1 db</h3>
+        <h3 id="ship3">Cirkáló(hossz: 3): 1 db</h3>
+        <h3 id="ship4">Csatahajó(hossz: 4): 1 db</h3>
+        <h3 id="ship5">Anyahajó(hossz: 5): 1 db</h3>
+      </div>
+    </div>
+  </body>
+</html>

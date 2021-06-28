@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tabella</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<?php 
+
+$result = mysqli_query($conn,"SELECT * FROM users ORDER BY points DESC ");
+
+	echo '
+
+		
+
+		<table class="table" border-top-color="red" border="1">
+			<thead>
+				<tr>
+
+					<th>Név</th>
+					<th>Megnyert csaták</th>
+					<th>Elvesztett csaták</th>
+					<th>Pont</th>
+					
+				</tr>
+			</thead>
+
+			<tbody>';
+				while ($felh=$result->fetch_assoc())
+					{
+						echo '
+							<tr>
+								
+							</tr>
+							<tr>
+								<td>'.$felh['name'].'</td>
+								<td>'.$felh['win'].'</td>
+								<td>'.$felh['lose'].'</td>
+								<td>'.$felh['points'].'</td>
+							</tr>
+						';
+					}
+			echo'
+			</tbody>
+
+			<tfoot>
+			</tfoot>
+		</table>
+	';
+
+	 ?>
+</body>
+</html>
