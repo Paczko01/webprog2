@@ -34,7 +34,6 @@ const ChannelList = (function()
         onClickNew: function(event)
         {
             event.preventDefault();
-            const id = event.target.getAttribute("value");
 
             this.xhttp.onreadystatechange = function ()
             {
@@ -42,7 +41,7 @@ const ChannelList = (function()
                 {
                     console.log(this.responseText);
                     
-                    //location.replace("http://localhost/webprog2/GameBoard/index.html");
+                    location.replace("http://localhost/webprog2/GameBoard/index.html");
                 }
             };
 
@@ -53,8 +52,8 @@ const ChannelList = (function()
             this.xhttp.send(
                 "u=" + this.username +
                 "&p=" + this.password +
-                "&ch=" + id +
-                "&player=" + this.Id);
+                "&player=" + this.Id +
+                "&chname=" + this.username + "s");
         },
 
         onClickSignOut: function(event)
@@ -119,8 +118,8 @@ const ChannelList = (function()
             //-----------------------------------------------------------
             //Ide az aktuálisan bejelentkezett felhasználó adatai jönnek.
             this.Id       = 1; 
-            this.username = "outsider";
-            this.password = "outsider";
+            this.username = "root";
+            this.password = "";
             //-----------------------------------------------------------
             this.xhttp = new XMLHttpRequest()
 
