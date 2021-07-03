@@ -1,32 +1,179 @@
--- phpMyAdmin SQL Dump
--- version 5.1.0
--- https://www.phpmyadmin.net/
+CREATE DATABASE  IF NOT EXISTS `db_webprog` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `db_webprog`;
+-- MySQL dump 10.13  Distrib 8.0.25, for Win64 (x86_64)
 --
--- Gép: 127.0.0.1
--- Létrehozás ideje: 2021. Jún 18. 03:41
--- Kiszolgáló verziója: 10.4.19-MariaDB
--- PHP verzió: 7.4.19
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
+-- Host: localhost    Database: db_webprog
+-- ------------------------------------------------------
+-- Server version	8.0.25
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Adatbázis: `db_webprog`
+-- Table structure for table `channels`
 --
 
-DELIMITER $$
+DROP TABLE IF EXISTS `channels`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `channels` (
+  `Id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) CHARACTER SET utf8 COLLATE utf8_hungarian_ci DEFAULT NULL,
+  `player_1_ID` int DEFAULT NULL,
+  `player_2_ID` int DEFAULT NULL,
+  `status` char(1) CHARACTER SET utf8 COLLATE utf8_hungarian_ci NOT NULL DEFAULT 'e',
+  PRIMARY KEY (`Id`),
+  KEY `FK_channels2status` (`status`),
+  KEY `FK_channels2user_1_idx` (`player_1_ID`),
+  KEY `FK_channels2user_2_idx` (`player_2_ID`),
+  CONSTRAINT `FK_channels2status` FOREIGN KEY (`status`) REFERENCES `status` (`ID`),
+  CONSTRAINT `FK_channels2user_1` FOREIGN KEY (`player_1_ID`) REFERENCES `users` (`ID`),
+  CONSTRAINT `FK_channels2user_2` FOREIGN KEY (`player_2_ID`) REFERENCES `users` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
 --
--- Eljárások
+-- Dumping data for table `channels`
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `JoinChannel` (IN `ch_Id` INT, IN `pl_Id` INT)  BEGIN
-	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+
+LOCK TABLES `channels` WRITE;
+/*!40000 ALTER TABLE `channels` DISABLE KEYS */;
+INSERT INTO `channels` VALUES (1,NULL,NULL,NULL,'e'),(2,NULL,NULL,NULL,'e'),(3,NULL,NULL,NULL,'e'),(4,NULL,NULL,NULL,'e'),(5,NULL,NULL,NULL,'e'),(6,NULL,NULL,NULL,'e'),(7,NULL,NULL,NULL,'e'),(8,NULL,NULL,NULL,'e'),(9,NULL,NULL,NULL,'e'),(10,NULL,NULL,NULL,'e'),(11,NULL,NULL,NULL,'e'),(12,NULL,NULL,NULL,'e'),(13,NULL,NULL,NULL,'e'),(14,NULL,NULL,NULL,'e'),(15,NULL,NULL,NULL,'e'),(16,NULL,NULL,NULL,'e'),(17,NULL,NULL,NULL,'e'),(18,NULL,NULL,NULL,'e'),(19,NULL,NULL,NULL,'e'),(20,NULL,NULL,NULL,'e'),(21,NULL,NULL,NULL,'e'),(22,NULL,NULL,NULL,'e'),(23,NULL,NULL,NULL,'e'),(24,NULL,NULL,NULL,'e'),(25,NULL,NULL,NULL,'e'),(26,NULL,NULL,NULL,'e'),(27,NULL,NULL,NULL,'e'),(28,NULL,NULL,NULL,'e'),(29,NULL,NULL,NULL,'e'),(30,NULL,NULL,NULL,'e'),(31,NULL,NULL,NULL,'e');
+/*!40000 ALTER TABLE `channels` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `status`
+--
+
+DROP TABLE IF EXISTS `status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `status` (
+  `ID` char(1) CHARACTER SET utf8 COLLATE utf8_hungarian_ci NOT NULL,
+  `name` varchar(45) CHARACTER SET utf8 COLLATE utf8_hungarian_ci NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `name_UNIQUE` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `status`
+--
+
+LOCK TABLES `status` WRITE;
+/*!40000 ALTER TABLE `status` DISABLE KEYS */;
+INSERT INTO `status` VALUES ('e','empty'),('s','satured'),('u','unsatured');
+/*!40000 ALTER TABLE `status` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_hungarian_ci NOT NULL,
+  `username` varchar(30) CHARACTER SET utf8 COLLATE utf8_hungarian_ci NOT NULL,
+  `Email` varchar(255) CHARACTER SET utf8 COLLATE utf8_hungarian_ci NOT NULL,
+  `points` int NOT NULL DEFAULT '0',
+  `win` int NOT NULL DEFAULT '0',
+  `lose` int NOT NULL DEFAULT '0',
+  `passWord` varchar(255) CHARACTER SET utf8 COLLATE utf8_hungarian_ci NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `Email_UNIQUE` (`Email`),
+  UNIQUE KEY `username_UNIQUE` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'Gál Zalán','gZaza99','zalan.gal.99@gmail.com',0,0,0,'*2A0F391CA7ADBA898ECC688F059A59972C20C0F7');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'db_webprog'
+--
+/*!50003 DROP FUNCTION IF EXISTS `CodePassword` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `CodePassword`(`p_uncoded` VARCHAR(20)) RETURNS varchar(255) CHARSET utf8mb4 COLLATE utf8mb4_hungarian_ci
+    DETERMINISTIC
+BEGIN
+    DECLARE `coded` VARCHAR(255) DEFAULT NULL;
+    SET `coded` = CONCAT('*',UPPER(SHA1(UNHEX(SHA1(`p_uncoded`)))));
+    RETURN `coded`;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `CheckLogin` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CheckLogin`(IN  `p_usrName` VARCHAR(30), 
+                               IN  `p_pwd`     VARCHAR(20), 
+                               OUT `p_result`  BOOLEAN     )
+BEGIN
+	DECLARE `pwd` VARCHAR(255);
+    SELECT `passWord` INTO `pwd` FROM `users` WHERE `username` = `p_usrName`;
+    IF (`pwd` = CodePassword(`p_pwd`) ) THEN
+        SET `p_result` = TRUE;
+	ELSE
+        SET `p_result` = FALSE;
+    END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `JoinChannel` */;
+ALTER DATABASE `db_webprog` CHARACTER SET utf8mb3 COLLATE utf8_hungarian_ci ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `JoinChannel`(IN `ch_Id` INT, 
+                                IN `pl_Id` INT )
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
     	ROLLBACK;
     END;
@@ -38,10 +185,28 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `JoinChannel` (IN `ch_Id` INT, IN `p
     WHERE `Id` = ch_Id;
     
     COMMIT;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `LeaveChannel` (IN `ch_Id` INT, IN `pl_Id` INT)  BEGIN
-	DECLARE `p1` INT;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+ALTER DATABASE `db_webprog` CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci ;
+/*!50003 DROP PROCEDURE IF EXISTS `LeaveChannel` */;
+ALTER DATABASE `db_webprog` CHARACTER SET utf8mb3 COLLATE utf8_hungarian_ci ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `LeaveChannel`(IN `ch_Id` INT, 
+                                 IN `pl_Id` INT )
+BEGIN
+    DECLARE `p1` INT;
     DECLARE `p2` INT;
     DECLARE `stat` CHAR;
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -87,10 +252,28 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `LeaveChannel` (IN `ch_Id` INT, IN `
     END IF;
     
     COMMIT;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OpenChannel` (IN `pl_Id` INT, IN `ch_name` VARCHAR(64))  BEGIN
-	DECLARE ch_Id INT;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+ALTER DATABASE `db_webprog` CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci ;
+/*!50003 DROP PROCEDURE IF EXISTS `OpenChannel` */;
+ALTER DATABASE `db_webprog` CHARACTER SET utf8mb3 COLLATE utf8_hungarian_ci ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `OpenChannel`(IN `pl_Id`   INT, 
+                                IN `ch_name` VARCHAR(64))
+BEGIN
+    DECLARE ch_Id INT;
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
     	ROLLBACK;
@@ -115,118 +298,66 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `OpenChannel` (IN `pl_Id` INT, IN `c
     END IF;
     
     COMMIT;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Register` (IN `p_usrName` VARCHAR(30), IN `p_pwd` VARCHAR(30), IN `p_name` VARCHAR(50))  INSERT INTO `users` (`username`, `passWord`, `name`)
-VALUES (p_usrName, PASSWORD(p_pwd), p_name)$$
-
---
--- Függvények
---
-CREATE DEFINER=`root`@`localhost` FUNCTION `IsLoginValid` (`p_usrName` VARCHAR(30), `p_pwd` VARCHAR(30)) RETURNS TINYINT(1) BEGIN
-	DECLARE pwd VARCHAR(255);
-    SELECT `passWord` INTO pwd FROM `users` WHERE `username` = p_usrName;
-    RETURN (PASSWORD(p_pwd) = pwd);
-END$$
-
+END ;;
 DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+ALTER DATABASE `db_webprog` CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci ;
+/*!50003 DROP PROCEDURE IF EXISTS `Register` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Register`(IN  `p_email`   VARCHAR(255),
+                                                       IN  `p_name`    VARCHAR(50), 
+                                                       IN  `p_usrName` VARCHAR(30), 
+							                           IN  `p_pwd`     VARCHAR(20), 
+													   OUT `p_result`  VARCHAR(255) )
+BEGIN
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+    	ROLLBACK;
+        SET `p_result` = 'ERROR';
+    END;
+	START TRANSACTION;
+    
+    SET `p_result` = '';
+    
+    SELECT `Email` INTO `p_result` FROM `users` WHERE `Email` = `p_email`;
+    IF `p_result` = '' THEN
+    
+        SELECT `username` INTO `p_result` FROM `users` WHERE `username` = `p_usrName`;
+        IF `p_result` = '' THEN
+        
+            INSERT INTO `users` (`Email`, `name`, `username`, `passWord`)
+			VALUES (`p_email`, `p_name`, `p_usrName`, CodePassword(`p_pwd`));
+                
+        END IF;
+    
+    END IF;
+	
+    COMMIT;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
--- --------------------------------------------------------
-
---
--- Tábla szerkezet ehhez a táblához `channels`
---
-
-CREATE TABLE `channels` (
-  `Id` int(11) NOT NULL,
-  `name` varchar(64) COLLATE utf8_hungarian_ci DEFAULT NULL,
-  `player_1_ID` int(11) DEFAULT NULL,
-  `player_2_ID` int(11) DEFAULT NULL,
-  `status` char(1) COLLATE utf8_hungarian_ci NOT NULL DEFAULT 'e' COMMENT 'e:empty\r\nu:unsatured\r\ns:satured'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
-
---
--- A tábla adatainak kiíratása `channels`
---
-
-INSERT INTO `channels` (`Id`, `name`, `player_1_ID`, `player_2_ID`, `status`) VALUES
-(1, NULL, NULL, NULL, 'u'),
-(2, NULL, 3, NULL, 'u'),
-(3, 'Torpedo_1', 2, NULL, 'u'),
-(4, NULL, NULL, NULL, 'e');
-
--- --------------------------------------------------------
-
---
--- Tábla szerkezet ehhez a táblához `users`
---
-
-CREATE TABLE `users` (
-  `ID` int(11) NOT NULL,
-  `name` varchar(50) COLLATE utf8_hungarian_ci NOT NULL,
-  `points` int(11) NOT NULL DEFAULT 0,
-  `win` int(11) NOT NULL DEFAULT 0,
-  `lose` int(11) NOT NULL DEFAULT 0,
-  `username` varchar(30) COLLATE utf8_hungarian_ci NOT NULL,
-  `passWord` varchar(255) COLLATE utf8_hungarian_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
-
---
--- A tábla adatainak kiíratása `users`
---
-
-INSERT INTO `users` (`ID`, `name`, `points`, `win`, `lose`, `username`, `passWord`) VALUES
-(1, 'Ebéd Elek', 69, 12, 6, 'Ebedelek00', '*E4EE7DB331F233FA4918367B0A9187ECB98B53F0'),
-(2, 'Ammed Shearen', 30, 10, 40, 'MrShearen', '*AA60810541C94ED093125E059781F5DC8FC2CA1E'),
-(3, 'Maja Hee', 0, 0, 0, 'MrsMaja', '*429D068DAA9EA5EE6E5AA4BFD1F269BD0499346C');
-
---
--- Indexek a kiírt táblákhoz
---
-
---
--- A tábla indexei `channels`
---
-ALTER TABLE `channels`
-  ADD PRIMARY KEY (`Id`),
-  ADD KEY `fk1_users` (`player_1_ID`),
-  ADD KEY `fk2_users` (`player_2_ID`);
-
---
--- A tábla indexei `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`ID`),
-  ADD UNIQUE KEY `username` (`username`);
-
---
--- A kiírt táblák AUTO_INCREMENT értéke
---
-
---
--- AUTO_INCREMENT a táblához `channels`
---
-ALTER TABLE `channels`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT a táblához `users`
---
-ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- Megkötések a kiírt táblákhoz
---
-
---
--- Megkötések a táblához `channels`
---
-ALTER TABLE `channels`
-  ADD CONSTRAINT `fk1_users` FOREIGN KEY (`player_1_ID`) REFERENCES `users` (`ID`),
-  ADD CONSTRAINT `fk2_users` FOREIGN KEY (`player_2_ID`) REFERENCES `users` (`ID`);
-COMMIT;
-
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2021-07-03 22:25:56

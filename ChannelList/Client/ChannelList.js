@@ -118,8 +118,8 @@ const ChannelList = (function()
             //-----------------------------------------------------------
             //Ide az aktuálisan bejelentkezett felhasználó adatai jönnek.
             this.Id       = 1; 
-            this.username = "root";
-            this.password = "";
+            this.username = "gZaza99";
+            this.password = "172321613212331Gz";
             //-----------------------------------------------------------
             this.xhttp = new XMLHttpRequest()
 

@@ -10,6 +10,17 @@
 <body>
   <form action="#" class="login-form">
     <h1>Regisztráció</h1>
+
+    <div class="textb">
+      <input type="text" required>
+      <div class="placeholder">Név</div>
+    </div>
+    
+    <div class="textb">
+      <input type="email" required>
+      <div class="placeholder">E-mail</div>
+    </div>
+
     <div class="textb">
       <input type="text" required>
       <div class="placeholder">Felhasználónév</div>
@@ -22,34 +33,48 @@
     </div>
 
     <button class="btn fas fa-arrow-right" disabled></button>
+    <a href="http://localhost/webprog2/login/login.html">Vissza a bejelentkezéshez</a>
   </form>
 
   <script>
     var fields = document.querySelectorAll(".textb input");
     var btn = document.querySelector(".btn");
     function check(){
-      if(fields[0].value != "" && fields[1].value != "")
+      if(fields[0].value != "" && 
+         fields[1].value != "" && 
+         fields[2].value != "" && 
+         fields[3].value != "")
         btn.disabled = false;
       else
-        btn.disabled = true;  
+        btn.disabled = true;
     }
     function validate(){
       xmlHttp = new XMLHttpRequest();
 
       xmlHttp.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200){
-          
+          console.log( this.responseText );
           //location.replace("http://localhost/webprog2/login/login.html");
         }
       };
 
       xmlHttp.open("POST", "register.php", false);
       xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xmlHttp.send( "u=" + fields[0].value + "&p=" + fields[1].value );
+      console.log(fields[0].value + "\n");
+      console.log(fields[1].value + "\n");
+      console.log(fields[2].value + "\n");
+      console.log(fields[3].value + "\n");
+      xmlHttp.send( "n="  + fields[0].value + 
+                    "&e=" + fields[1].value + 
+                    "&u=" + fields[2].value + 
+                    "&p=" + fields[3].value );
+      console.log("Várakozás a szerverre...\n");
     }
 
     fields[0].addEventListener("keyup",check);
     fields[1].addEventListener("keyup",check);
+    fields[2].addEventListener("keyup",check);
+    fields[3].addEventListener("keyup",check);
     btn.addEventListener("click",function(event){
       event.preventDefault();
       validate();
@@ -59,11 +84,11 @@
       if(this.classList[2] == "fa-eye-slash"){
         this.classList.remove("fa-eye-slash");
         this.classList.add("fa-eye");
-        fields[1].type = "text";
+        fields[3].type = "text";
       }else{
         this.classList.remove("fa-eye");
         this.classList.add("fa-eye-slash");
-        fields[1].type = "password";
+        fields[3].type = "password";
       }
     });
   </script>
