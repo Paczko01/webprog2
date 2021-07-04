@@ -47,7 +47,7 @@
       xmlHttp.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200){
           const response = parseInt(this.responseText);
-          if ( response == 1 ){
+          if ( response != false ){
             location.replace("http://localhost/webprog2/ChannelList/ChannelList.html");
           } else {
             alert("Helytelen felhasználónév vagy jelszó!");
@@ -57,7 +57,8 @@
 
       xmlHttp.open("POST", "login.php", false);
       xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xmlHttp.send( "u=" + fields[0].value + "&p=" + fields[1].value );
+      xmlHttp.send( "u="  + fields[0].value + 
+                    "&p=" + fields[1].value );
     }
 
     fields[0].addEventListener("keyup",check);
