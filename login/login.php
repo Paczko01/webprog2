@@ -5,8 +5,7 @@
             die("Connection failed: " . $conn->connect_error);
         }
 
-        $sql = "SELECT COUNT(`ID`) AS count FROM `users`
-        WHERE `username` = '" . $_POST["u"] . "'   AND `passWord` = PASSWORD('" . $_POST["p"] . "')";
+        $sql = "CALL ";
         $result = $conn->query($sql)->fetch_assoc()['count'];
         
         echo $result;

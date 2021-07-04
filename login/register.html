@@ -58,17 +58,12 @@
         }
       };
 
-      xmlHttp.open("POST", "register.php", false);
+      xmlHttp.open("POST", "register.php", true);
       xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      console.log(fields[0].value + "\n");
-      console.log(fields[1].value + "\n");
-      console.log(fields[2].value + "\n");
-      console.log(fields[3].value + "\n");
       xmlHttp.send( "n="  + fields[0].value + 
                     "&e=" + fields[1].value + 
                     "&u=" + fields[2].value + 
                     "&p=" + fields[3].value );
-      console.log("Várakozás a szerverre...\n");
     }
 
     fields[0].addEventListener("keyup",check);
