@@ -46,21 +46,30 @@ const ChannelList = (function()
             };
 
             this.xhttp.open("POST", "Service/NewChannel.php", true);
-            
             this.xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            
-            this.xhttp.send(
-                "u=" + this.username +
-                "&p=" + this.password +
-                "&player=" + this.Id +
-                "&chname=" + this.username + "s");
+            this.xhttp.send( "u="       + this.username +
+                             "&p="      + this.password +
+                             "&player=" + this.Id +
+                             "&chname=" + this.username + "s");
         },
 
         onClickSignOut: function(event)
         {
             event.preventDefault();
 
-            location.replace("http://localhost/webprog2/login/login.html");
+            this.xhttp.onreadystatechange = function ()
+            {
+                if (this.readyState == 4 && this.status == 200)
+                {
+                    console.log(this.responseText);
+                    
+                    location.replace("http://localhost/webprog2/login/login.html");
+                }
+            };
+
+            this.xhttp.open("POST", "Service/SignOut.php", true);
+            this.xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            this.xhttp.send("u=" + this.username);
         },
 
         onClickRecords: function(event)
